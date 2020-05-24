@@ -9,14 +9,14 @@ with lib;
     ./_bundles.nix
 
     # these files set branding stuff and add branding packages, don't enable any flags
-    ./branding.nix
+    ../features/branding.nix
 
     # these files set optional states (TODO: mkDefault)
     ./os.nix
     ./services.nix
 
     # just adds packages
-    ./software.nix
+    ../features/software.nix
   ];
 
   # Disable this, because it breaks stuff

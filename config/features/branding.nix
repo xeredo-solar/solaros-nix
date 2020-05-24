@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... } @ args:
 
-with lib;
+with (import ../lib args);
 
-{
+mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } {
   # NOTE: this file shouldn't enable anything, just set the branding attributes
 
   services.xserver.displayManager.lightdm = {

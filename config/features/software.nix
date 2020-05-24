@@ -1,26 +1,8 @@
-# Always use glorious free software
+{ config, lib, pkgs, ... } @ args:
 
-{ config, lib, pkgs, ... }:
+with (import ../lib args);
 
-with lib;
-
-let
-  mkAutostart = list:
-    let
-      cmds = builtins.concatStringsSep "\n"
-        (forEach list (item: let
-          pkg = if builtins.isList item then elemAt 0 item else item;
-          name = if builtins.isList item then elemAt 1 item else item;
-          in
-            ''
-              install -D "${pkgs.${pkg}}/share/applications/${name}.desktop" "$out/etc/xdg/autostart/${name}.desktop"
-            ''));
-    in
-      pkgs.runCommand "autostart" {} cmds;
-in
-{
-  imports = [];
-
+mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = true; } {
   environment.systemPackages = with pkgs; [
     # external package formats
     flatpak                      # Good software utility to use if you can't find what you want at nixpkgs
@@ -64,4 +46,8 @@ in
     # ntfs ro fix
     (hiPrio ntfs3g)
   ];
-} // (import ./bundles.nix pkgs)
+} // {
+  imports = [
+    (import ../base/bundles.nix pkgs)
+  ];
+}
