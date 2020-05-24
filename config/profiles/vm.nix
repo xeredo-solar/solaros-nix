@@ -16,7 +16,7 @@ with lib;
 
   users.users.root.password = "";
 
-  solaros.bundle-preload = true;
+  solar.bundle-preload = true;
 
   services.mingetty.autologinUser = "root";
 

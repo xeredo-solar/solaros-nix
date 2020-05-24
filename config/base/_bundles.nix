@@ -4,13 +4,13 @@ with lib;
 
 {
   options = {
-    solaros.bundle-preload = mkOption {
+    solar.bundle-preload = mkOption {
       type = types.bool;
       description = "Whether to preload bundles by default, useful for installer";
       default = false;
     };
 
-    solaros.bundle = mkOption {
+    solar.bundle = mkOption {
       type = with types; attrsOf (submodule ({ name, ... }: {
         options = {
           name = mkOption {
@@ -26,7 +26,7 @@ with lib;
           enable = mkOption {
             type = types.bool;
             description = "Whether this bundle should be enabled";
-            default = config.solaros.bundle-preload;
+            default = config.solar.bundle-preload;
           };
         };
 
@@ -38,6 +38,6 @@ with lib;
   };
 
   config = {
-    environment.systemPackages = builtins.concatMap (bundle: if bundle.enable then bundle.pkgs else []) (builtins.attrValues config.solaros.bundle);
+    environment.systemPackages = builtins.concatMap (bundle: if bundle.enable then bundle.pkgs else []) (builtins.attrValues config.solar.bundle);
   };
 }

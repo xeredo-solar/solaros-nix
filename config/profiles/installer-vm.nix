@@ -21,5 +21,6 @@ in
 
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "quick-install-vm" (builtins.readFile ./quick-install-vm.sh))
+    pkgs.nixinstall.distinst
   ];
 }
