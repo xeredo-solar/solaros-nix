@@ -57,7 +57,7 @@ in
 
   solarosBundles = lib.makeScope pkgs.newScope (self:
     let
-      bundles = (import ../config/base/bundles.nix pkgs).solaros.bundle;
+      bundles = (import ../config/base/bundles.nix pkgs).config.solar.bundle;
     in
       recursiveIterateRecreate bundles (key:
         let
