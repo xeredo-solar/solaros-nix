@@ -17,6 +17,9 @@ with lib;
 
     # just adds packages
     ../features/software.nix
+
+    # features
+    ../features/xr.nix
   ];
 
   # Disable this, because it breaks stuff
