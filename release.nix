@@ -49,7 +49,7 @@ rec {
     name = "solaros-iso";
     version = "0.0.0";
 
-    src = ./config/empty.tar.gz;
+    dontUnpack = true;
 
     installPhase = ''
       mkdir $out
