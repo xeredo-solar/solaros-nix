@@ -5,5 +5,5 @@ let
 in
 {
   install = load ./install.nix;
-  launchDe = load ./launch-de.nix;
+  # launchDe = load ./launch-de.nix;
 }
