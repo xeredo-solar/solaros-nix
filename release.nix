@@ -17,14 +17,14 @@ let
         softwareAllowUnfree = !useLibre;
         keys = {
           services.xserver.desktopManager.${de}.enable = true;
-          solaros.libre = useLibre;
+          solar.features.libre = useLibre;
         };
       };
 
       extraConf = { ... }: {
         services.xserver.desktopManager.${de}.enable = true;
         environment.etc."conf-tool-seed.json".text = builtins.toJSON seedConf;
-        solaros.libre = useLibre;
+        solar.features.libre = useLibre;
       };
 
       merge = confs: { ... }: {

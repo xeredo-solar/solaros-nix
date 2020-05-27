@@ -9,7 +9,7 @@ in
 {
   imports = [
     ./../.
-    (mkIf (!config.solaros.libre) {
+    (mkIf (!config.solar.features.libre) {
       nixpkgs.config.allowUnfreePredicate = (x: if x ? meta.license then x.meta.license.shortName == "unfreeRedistributable" else false);
     })
   ];
