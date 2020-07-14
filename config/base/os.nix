@@ -35,6 +35,7 @@ with lib;
         https://nix.ssd-solar.dev/dev/nixos nixos
         https://nix.ssd-solar.dev/dev/nixos-hardware nixos-hardware
         https://nix.ssd-solar.dev/dev/solaros solaros
+        https://nix.ssd-solar.dev/dev/solarpkg solarpkg
       '';
     };
   };
