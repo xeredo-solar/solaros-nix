@@ -1,9 +1,8 @@
 {
   "url": "https://github.com/ssd-solar/conf-tool",
-  "rev": "961ceb66f9f8cad11351198df3e4306ca7612d00",
-  "date": "2020-04-17T04:20:43+02:00",
-  "path": "/nix/store/qgnjw7zrqg8zmg78jbwx1a37wdfliix2-conf-tool",
-  "sha256": "0cl3i2vsn173ia7l1644whdn6ddpx78biz9mp5p35dvjmv014318",
+  "rev": "62c37d23a07126ef6fc35d25495743fcdcd09932",
+  "date": "2020-07-22T17:53:05+02:00",
+  "sha256": "1rk425p0d5qq6q8rfc5ffnmjr68x62ass7xklmgjs80521ws50rw",
   "fetchSubmodules": false,
   "deepClone": false,
   "leaveDotGit": false
