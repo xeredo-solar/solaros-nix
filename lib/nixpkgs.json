@@ -1,7 +1,7 @@
 {
     "owner": "mkg20001",
     "repo": "nixpkgs",
-    "rev": "0d405e87e9b7bb73a459101adfb2ad0f3b455fa6",
-    "sha256": "1caid00dlbiwrldmzmlpdkhdxwbabc8dflragz33i82filsgq2nk",
+    "rev": "b5e98f611d1729f0521b71f0ef85fc730e0cb0ec",
+    "sha256": "09sp1v5y0fgrlgw8r0mhcc65qnpdpi7qrjdh0ndzlczcx4fhpbc7",
     "fetchSubmodules": false
 }
