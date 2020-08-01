@@ -104,6 +104,16 @@ rec {
         binaryCache = "solar.cachix.org";
         inherit gitRevision src;
       };
+    solarpkg =
+      let
+        ghSrc = builtins.fromJSON (builtins.readFile ./lib/solarpkg.json);
+        src = import ./lib/solarpkg.nix;
+      in
+      _channels.createChannel {
+        channelName = "solarpkg";
+        binaryCache = "solar.cachix.org";
+        inherit ghSrc src;
+      };
   };
 
   allChannels = _channels.createMergedOutput (builtins.attrValues channels);
