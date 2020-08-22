@@ -19,8 +19,9 @@ with lib;
     ../features/software.nix
 
     # features
-    ../features/xr.nix
     ../features/bluetooth.nix
+    ../features/printing.nix
+    ../features/xr.nix
   ];
 
   # Disable this, because it breaks stuff

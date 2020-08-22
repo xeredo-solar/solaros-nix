@@ -3,6 +3,13 @@
 with lib;
 with (import ./util.nix lib);
 
+# The essential stuff
+# What is essential?
+#  - Tiny background services that don't add much res-usage but prove to be very useful
+#  - Services that apps need to run properly
+#  - System-internal things that do their job in the background
+#  - Packages for hardware that most devices have (for ex bluetooth is on by default. but the laptop might not have it, so it's a feature)
+
 makeDefault {
   # Enable GPG agent
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
@@ -42,46 +49,4 @@ makeDefault {
   powerManagement.enable = true;
   services.upower.enable = true;
   services.acpid.enable = true;
-
-  services.system-config-printer.enable = true;
-  environment.systemPackages = with pkgs; [ system-config-printer ];
-
-  # Enable CUPS to print documents.
-  services.printing = {
-    enable = true;
-
-    drivers = with pkgs; [
-      gutenprint
-      gutenprintBin
-      cups-googlecloudprint
-    ];
-
-    # this enables avahi+browsed autodiscover
-    # TODO: rework, this was mostly written "catch-all" style
-    browsing = true;
-    defaultShared = true;
-    extraConf = ''
-BrowseDNSSDSubTypes _cups,_print
-BrowseLocalProtocols all
-BrowseRemoteProtocols all
-CreateIPPPrinterQueues All
-    '';
-    browsedConf = ''
-BrowseDNSSDSubTypes _cups,_print
-BrowseLocalProtocols all
-BrowseRemoteProtocols all
-CreateIPPPrinterQueues All
-
-BrowseProtocols all
-    '';
-  };
-
-  # Cups network printing
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-  };
-
-  # And sane to scan
-  hardware.sane.enable = true;
 }
