@@ -20,6 +20,7 @@ with lib;
 
     # features
     ../features/xr.nix
+    ../features/bluetooth.nix
   ];
 
   # Disable this, because it breaks stuff
