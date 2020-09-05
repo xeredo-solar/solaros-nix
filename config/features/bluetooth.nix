@@ -7,7 +7,7 @@ mkFeatureFlag { name = "bluetooth"; desc = "Bluetooth support"; enabled = true; 
     enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    blueman
-  ];
+  services.blueman = {
+    enable = true;
+  };
 }
