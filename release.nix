@@ -1,6 +1,10 @@
 let
   nixpkgs = import ./lib/nixpkgs.nix;
-  _nixpkgs = import "${nixpkgs}" {};
+  _nixpkgs = import "${nixpkgs}" {
+    overlays = [
+      (import ./pkgs/overlay.nix)
+    ];
+  };
   load = configuration: (import "${nixpkgs}/nixos" {
     inherit configuration;
   });
@@ -9,7 +13,7 @@ let
   cleanSource = (import ./lib/cleansource.nix _nixpkgs.lib).cleanSource;
   trim = builtins.replaceStrings [ "\n" ] [ "" ];
 
-  pkgs = import ./pkgs;
+  pkgs = _nixpkgs.lib.recurseIntoAttrs (_nixpkgs.callPackage ./pkgs/all-packages.nix { });
 
   osConfig = { de, useLibre ? false }:
     let
