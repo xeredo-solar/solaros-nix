@@ -8,10 +8,10 @@ let
     sha256 = installerSrcData.sha256;
   };
 
-  /* recursiveIterateRecreate = set: iter:
+  recursiveIterateRecreate = set: iter:
     builtins.listToAttrs(
       builtins.concatMap iter (builtins.attrNames set)
-    ); */
+    );
 in
 lib.makeScope pkgs.newScope (self: with self; {
   # src
