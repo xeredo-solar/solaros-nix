@@ -3,7 +3,7 @@ let
   installerSrcData = builtins.fromJSON (builtins.readFile ./nixinstall/source.json);
   installerSrc = pkgs.fetchFromGitHub {
     repo = "nixinstall";
-    owner = "mercode-org";
+    owner = "ssd-solar";
     rev = installerSrcData.rev;
     sha256 = installerSrcData.sha256;
   };
