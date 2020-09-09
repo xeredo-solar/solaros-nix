@@ -25,7 +25,7 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     qpaeq                        # Equalizer
     flameshot                    # screenshot tool that supports editing the screenshot in-place
     cinnamon.warpinator          # File-transfer tool
-    cinnamon.blueberry           # bt-managment tool
+    blueberry                    # bt-managment tool
 
     # cli utils
     htop                         # Interactive process viewer
