@@ -1,8 +1,8 @@
 {
   "url": "https://github.com/ssd-solar/nixinstall",
-  "rev": "95cea62e10ab76ffeab26b2c9c64da1dc93591a9",
-  "date": "2020-09-09T22:35:36+02:00",
-  "sha256": "0la0xvbcazari780kzb9krz18pri042vyb9hhvzhj7jgbqm4bmkw",
+  "rev": "dbdcf6638f65fa1e7dab1ee67afa9e0a5558b89c",
+  "date": "2020-09-09T23:04:59+02:00",
+  "sha256": "00p7bny2iask0z8mh0p8qi3agv2ip3lwc76hyn7i6mdi3vxza963",
   "fetchSubmodules": false,
   "deepClone": false,
   "leaveDotGit": false
