@@ -3,5 +3,5 @@
     "repo": "nix-node-package",
     "rev": "6ece1177d0c0b8aca1a983744099235f4191d735",
     "sha256": "0j8dcqchyifihnf60xwwyc0gps7vz2xm3ar7f2p66f4kpdn63vb5",
-    "fetchSubmodules": false
+    "fetchSubmodules": true
 }
