@@ -24,6 +24,12 @@ with lib;
       };
     };
 
+    environment.systemPackages = with pkgs; [
+      # sys apps
+      conf-tool                    # Config Tool
+      nixNodePackage               # A hack to get nix-node package to be available at every eval
+    ];
+
     channels = {
       /* links = ''
         https://github.com/mkg20001/nixpkgs/archive/mkg-patch-a.tar.gz nixos

@@ -44,9 +44,22 @@ makeDefault {
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
+  services.xserver.updateDbusEnvironment = true;
 
   # Enable powerManagment
   powerManagement.enable = true;
   services.upower.enable = true;
-  services.acpid.enable = true;
+  # services.acpid.enable = true;
+
+  # More essential stuff
+  security.polkit.enable = true;
+  services.accounts-daemon.enable = true;
+  services.gnome3.glib-networking.enable = true;
+  services.gnome3.gnome-keyring.enable = true;
+  services.udisks2.enable = true;
+  services.geoclue2.enable = true;
+  networking.networkmanager.enable = true;
+
+  # Enable colord server
+  services.colord.enable = true;
 }

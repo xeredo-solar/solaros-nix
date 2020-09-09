@@ -28,6 +28,7 @@ mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } 
   environment.systemPackages = with pkgs; [
     # design
     # TODO
+    # vanilla-dmz (wait for license fix merge)
 
     # system
     # TODO
@@ -37,9 +38,22 @@ mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } 
     "/share/wallpapers"
   ];
 
+  # Default Fonts
   fonts.fonts = with pkgs; [
+    # branding
     raleway
     jetbrains-mono
+    ubuntu_font_family
+
+    # also add
+    open-sans
+    roboto-mono
+
+    # default things
+    cantarell-fonts
+    dejavu_fonts
+    source-code-pro # Default monospace font in 3.32
+    source-sans-pro
   ];
 
   fonts.fontconfig.defaultFonts.monospace = [ "Jetbrains Mono Regular" ];

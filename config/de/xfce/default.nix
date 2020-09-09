@@ -16,5 +16,4 @@ mkIf config.services.xserver.desktopManager.xfce.enable {
 
   # set pam skel
   security.pam.makeHomeDir.skelDirectory = pkgs.solaros-skel-xfce;
-
 }

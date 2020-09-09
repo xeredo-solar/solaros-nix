@@ -8,16 +8,10 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     flatpak                      # Good software utility to use if you can't find what you want at nixpkgs
     # snapd N/A yet
 
-    # sys apps
-    conf-tool                    # Config Tool
-    nixNodePackage               # A hack to get nix-node package to be available at every eval
-
     # utilities
     git                          # That's git everybody, our favourite scm
     curl                         # HTTP-debugger
     wget                         # The gold standard for CLI downloads
-    gnome3.gnome-disk-utility    # As the name says
-    gnome3.file-roller           # A WinRAR that doesn't ask you to pay
     psmisc                       # Needed utils bundled in a single package
     tree                         # A better version of ls
     gnome3.gnome-system-monitor  # Its pretty understandable from the name, I guess?
@@ -30,7 +24,8 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     font-manager                 # The name says everything
     qpaeq                        # Equalizer
     flameshot                    # screenshot tool that supports editing the screenshot in-place
-    cinnamon.warp                # Cinnamon Warp
+    cinnamon.warpinator          # File-transfer tool
+    cinnamon.blueberry           # bt-managment tool
 
     # cli utils
     htop                         # Interactive process viewer
@@ -46,6 +41,11 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     # ntfs ro fix
     (hiPrio ntfs3g)
   ];
+
+  programs.geary.enable = true;
+  programs.gnome-disks.enable = true;
+  programs.gnome-terminal.enable = true;
+  programs.file-roller.enable = true;
 } // {
   imports = [
     (import ../base/bundles.nix pkgs)
