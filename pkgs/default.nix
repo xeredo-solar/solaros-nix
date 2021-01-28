@@ -1,2 +1,4 @@
-(import ./all-packages.nix
-  (import ../dev.nix))
+prev:
+with prev; rec {
+  conf-tool = callPackage ./conf-tool { };
+}

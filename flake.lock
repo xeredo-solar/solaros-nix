@@ -2,14 +2,16 @@
   "nodes": {
     "nix-node-package": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1611790317,
-        "narHash": "sha256-nkDLj5NqX/x19RA95oGBUVuCe5I2ua06gOCYLweo2jw=",
+        "lastModified": 1611793849,
+        "narHash": "sha256-/suMk+x9hFRMZ6kg5vv37N5CG3vSDJn8fpZsuRV1KhA=",
         "owner": "mkg20001",
         "repo": "nix-node-package",
-        "rev": "5eec71f13be9b06f376dcf57108f3c332deeb186",
+        "rev": "aa53130569ee2e7f72fc8d86cf13e913c4b9d952",
         "type": "github"
       },
       "original": {
@@ -37,20 +39,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1611791419,
-        "narHash": "sha256-pWKbmAZ1T3vHyasHb3ek3TH1Wf2LLw9h2Rf3eC729g8=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "637244e3437e9fb0f355358783d0eafc12a3eec5",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "lastModified": 1611720513,
         "narHash": "sha256-+3NN/OhTesexBePHfZUTLk/GJrEYptplbASpghE2fRw=",
         "owner": "mkg20001",
@@ -69,7 +57,7 @@
       "inputs": {
         "nix-node-package": "nix-node-package",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       }
     }
   },
