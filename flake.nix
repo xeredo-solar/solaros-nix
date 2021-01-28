@@ -65,6 +65,12 @@
         f: import "${nixpkgs}/nixos/tests/make-test-python.nix" f { inherit system; }
       ));
 
+      lib = {
+        inherit
+          forAllSystems
+          genericForAllSystems;
+      };
+
       # defaultPackage = forAllSystems ({ system, ... }: self.packages.${system}.pijul);
     };
 }
