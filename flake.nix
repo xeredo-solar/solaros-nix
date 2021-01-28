@@ -68,7 +68,8 @@
       lib = {
         inherit
           forAllSystems
-          genericForAllSystems;
+          genericForAllSystems
+          nixpkgs;
       };
 
       # defaultPackage = forAllSystems ({ system, ... }: self.packages.${system}.pijul);
