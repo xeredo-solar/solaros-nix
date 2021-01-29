@@ -1,0 +1,186 @@
+From 2a82ebb244969585e4f6e6166a522d783d178474 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Maciej=20Kr=C3=BCger?= <mkg20001@gmail.com>
+Date: Tue, 14 Jul 2020 17:50:44 +0200
+Subject: [PATCH] feat: add a JSON progress bar to fd 3
+
+---
+ src/libmain/progress-bar.cc | 90 ++++++++++++++++++++++++++++++++++++-
+ src/libutil/logging.cc      | 12 +++++
+ src/libutil/logging.hh      |  1 +
+ 3 files changed, 101 insertions(+), 2 deletions(-)
+
+diff --git a/src/libmain/progress-bar.cc b/src/libmain/progress-bar.cc
+index 0e5432fca..86abeaad2 100644
+--- a/src/libmain/progress-bar.cc
++++ b/src/libmain/progress-bar.cc
+@@ -8,6 +8,7 @@
+ #include <map>
+ #include <thread>
+ #include <iostream>
++#include <nlohmann/json.hpp>
+ 
+ namespace nix {
+ 
+@@ -88,13 +89,14 @@ public:
+         : printBuildLogs(printBuildLogs)
+         , isTTY(isTTY)
+     {
+-        state_.lock()->active = isTTY;
++        state_.lock()->active = true;
+         updateThread = std::thread([&]() {
+             auto state(state_.lock());
+             while (state->active) {
+                 if (!state->haveUpdate)
+                     state.wait(updateCV);
+                 draw(*state);
++                dumpState(*state);
+                 state.wait_for(quitCV, std::chrono::milliseconds(50));
+             }
+         });
+@@ -139,6 +141,10 @@ public:
+     void log(State & state, Verbosity lvl, const std::string & s)
+     {
+         if (state.active) {
++            dumpState(state);
++        }
++
++        if (state.active && isTTY) {
+             writeToStderr("\r\e[K" + filterANSIEscapes(s, !isTTY) + ANSI_NORMAL "\n");
+             draw(state);
+         } else {
+@@ -324,10 +330,46 @@ public:
+         updateCV.notify_one();
+     }
+ 
++    void dumpState(State & state)
++    {
++        state.haveUpdate = false;
++        if (!state.active || !std::getenv("DUMP_JSON")) return;
++
++        auto s = nlohmann::json::object();
++
++        s["status"] = getStatusJSON(state);
++
++        s["activities"] = nlohmann::json::array();
++
++        auto I = 0;
++
++        if (!state.activities.empty()) {
++            auto i = state.activities.rbegin();
++
++            while (i != state.activities.rend() && (!i->visible || (i->s.empty() && i->lastLine.empty())))
++                ++i;
++
++            if (i != state.activities.rend()) {
++                auto act = nlohmann::json::object();
++                s["activites"][I] = act;
++                I++;
++                act["s"] = i->s;
++                if (!i->phase.empty()) {
++                    act["phase"] = i->phase;
++                }
++                if (!i->lastLine.empty()) {
++                    act["lastLine"] = i->lastLine;
++                }
++            }
++        }
++
++        writeToAlien(s.dump());
++    }
++
+     void draw(State & state)
+     {
+         state.haveUpdate = false;
+-        if (!state.active) return;
++        if (!state.active || !isTTY) return;
+ 
+         std::string line;
+ 
+@@ -365,6 +407,50 @@ public:
+         writeToStderr("\r" + filterANSIEscapes(line, false, width) + ANSI_NORMAL + "\e[K");
+     }
+ 
++    nlohmann::json getStatusJSON(State & state) {
++        auto status = nlohmann::json::object();
++
++        auto MiB = 1024.0 * 1024.0;
++
++        auto renderActivity = [&](ActivityType type, const std::string & key, const std::string & itemFmt, const std::string & numberFmt = "%d", double unit = 1) {
++            auto & act = state.activitiesByType[type];
++            uint64_t done = act.done, expected = act.done, running = 0, failed = act.failed;
++            for (auto & j : act.its) {
++                done += j.second->done;
++                expected += j.second->expected;
++                running += j.second->running;
++                failed += j.second->failed;
++            }
++
++            expected = std::max(expected, act.expected);
++
++            status[key] = nlohmann::json::object();
++
++            status[key]["unit"] = unit;
++            status[key]["running"] = running;
++            status[key]["done"] = done;
++            status[key]["expected"] = expected;
++            status[key]["failed"] = failed;
++
++            status[key]["itemFmt"] = itemFmt;
++            status[key]["numberFmt"] = numberFmt;
++        };
++
++        renderActivity(actCopyPaths, "copyPaths", "%s copied");
++        renderActivity(actCopyPath, "copyPath", "%s MiB", "%.1f", MiB);
++        renderActivity(actFileTransfer, "fileTransfer", "%s MiB DL", "%.1f", MiB);
++        renderActivity(actBuilds, "builds", "%s built");
++        renderActivity(actOptimiseStore, "optimiseStore", "%s paths optimised");
++        renderActivity(actVerifyPaths, "verifyPaths", "%s paths verified");
++
++        status["corruptedPaths"] = state.corruptedPaths;
++        status["untrustedPaths"] = state.untrustedPaths;
++        status["bytesLinked"] = state.bytesLinked;
++        status["filesLinked"] = state.filesLinked;
++
++        return status;
++    }
++
+     std::string getStatus(State & state)
+     {
+         auto MiB = 1024.0 * 1024.0;
+diff --git a/src/libutil/logging.cc b/src/libutil/logging.cc
+index d2e801175..1670fc993 100644
+--- a/src/libutil/logging.cc
++++ b/src/libutil/logging.cc
+@@ -125,6 +125,18 @@ void writeToStderr(const string & s)
+     }
+ }
+ 
++void writeToAlien(const string & s)
++{
++    try {
++        writeFull(3, s, false);
++    } catch (SysError & e) {
++        /* Ignore failing writes to stderr.  We need to ignore write
++           errors to ensure that cleanup code that logs to stderr runs
++           to completion if the other side of stderr has been closed
++           unexpectedly. */
++    }
++}
++
+ Logger * makeSimpleLogger(bool printBuildLogs)
+ {
+     return new SimpleLogger(printBuildLogs);
+diff --git a/src/libutil/logging.hh b/src/libutil/logging.hh
+index 96ad69790..cd0cde856 100644
+--- a/src/libutil/logging.hh
++++ b/src/libutil/logging.hh
+@@ -216,5 +216,6 @@ inline void warn(const std::string & fs, const Args & ... args)
+ void warnOnce(bool & haveWarned, const FormatOrString & fs);
+ 
+ void writeToStderr(const string & s);
++void writeToAlien(const string & s);
+ 
+ }
+-- 
+2.30.0
+

@@ -3,11 +3,6 @@
 
   inputs = {
 
-    /* nix run nixos.nix-prefetch-github -c nix-prefetch-github mkg20001 nixpkgs --rev mkg-patch-a > lib/nixpkgs.json
-    nix run nixos.nix-prefetch-github -c nix-prefetch-github mkg20001 nix-node-package --rev master > lib/nix-node-package.json
-    nix run nixos.nix-prefetch-github -c nix-prefetch-github nixos nixos-hardware --rev master > lib/nixos-hardware.json
-    nix run nixos.nix-prefetch-github -c nix-prefetch-github ssd-solar solarpkg --rev master > lib/solarpkg.json */
-
     nixpkgs.url = "github:mkg20001/nixpkgs/mkg-patch-a";
     nix-node-package.url = "github:mkg20001/nix-node-package/master";
     nix-node-package.inputs.nixpkgs.follows = "nixpkgs";
@@ -31,9 +26,11 @@
 
       solarLibOverlay = final: prev: {
         mkNode = nix-node-package.lib.nix-node-package prev;
+        sFetchSrc = source: prev.fetchFromGitHub (builtins.fromJSON (builtins.readFile source));
+        nixpkgs = nixpkgs;
       };
 
-      solarOverlay = final: prev:
+      solarPkgOverlay = final: prev:
         import ./pkgs prev;
 
       genericForAllSystems = f: genAttrs allSystems (system: f system);
@@ -42,10 +39,7 @@
         inherit system;
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [
-            solarLibOverlay
-            solarOverlay
-          ];
+          overlays = (builtins.attrValues self.overlays);
         };
       });
     in
@@ -70,6 +64,12 @@
           forAllSystems
           genericForAllSystems
           nixpkgs;
+      };
+
+      overlays = {
+        inherit
+          solarPkgOverlay
+          solarLibOverlay;
       };
 
       # defaultPackage = forAllSystems ({ system, ... }: self.packages.${system}.pijul);

@@ -1,31 +1,23 @@
 { fetchFromGitHub
 , stdenv
 , mkNode
-, nodejs-12_x
+, nodejs-14_x
 , makeWrapper
+, lib
+, sFetchSrc, drvSrc ? sFetchSrc ./source.json
 }:
 
 with (builtins);
 
-let
-  srcData = fromJSON (readFile ./source.json);
-  name = "conf-tool";
-  src = fetchFromGitHub {
-    repo = name;
-    owner = "ssd-solar";
-    rev = srcData.rev;
-    sha256 = srcData.sha256;
-  };
-in
-mkNode { root = src; packageLock = ./package-lock.json; nodejs = nodejs-12_x; production = false; } rec {
-  pname = name;
+mkNode { root = drvSrc; packageLock = ./package-lock.json; nodejs = nodejs-14_x; production = false; } rec {
+  pname = "conf-tool";
 
   nativeBuildInputs = [
     makeWrapper
   ];
 
   buildPhase = ''
-    # BANG="#!${nodejs-12_x}/bin/node"
+    # BANG="#!${nodejs-14_x}/bin/node"
     # sed "s&oclif-dev manifest&sed 's|^#!.*|$BANG|g' -i node_modules/.bin/oclif-dev ; cd node_modules/@oclif/dev-cli ; oclif-dev manifest&g" -i package.json
     # export HOME=/tmp
     # export DEBUG=*
@@ -37,10 +29,10 @@ mkNode { root = src; packageLock = ./package-lock.json; nodejs = nodejs-12_x; pr
       --suffix PATH : "/run/current-system/sw/bin" # to get access to the nixos-* tools
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Tool to manage the nixOS config";
-    homepage = https://github.com/mercode-org/conf-tool;
-    # license = licenses.mpl2;
+    homepage = https://github.com/ssd-solar/conf-tool;
+    license = licenses.mpl20;
     maintainers = with maintainers; [ mkg20001 ];
   };
 }
