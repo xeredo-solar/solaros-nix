@@ -13,7 +13,6 @@ mkFeatureFlag { name = "printing"; desc = "printing and scanning support"; enabl
     drivers = with pkgs; [
       gutenprint
       gutenprintBin
-      cups-googlecloudprint
     ];
 
     # this enables avahi+browsed autodiscover

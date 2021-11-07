@@ -39,10 +39,10 @@ in
   environment.systemPackages = with pkgs; [
     gparted
     parted
-    solaros-installer
+    # solaros-installer
 
     # we need this so the stub (that includes all the stuff that's on an installed system and not in the installer) gets included
-    (pkgs.stdenv.mkDerivation {
+    /* (pkgs.stdenv.mkDerivation {
       pname = "stub-systems";
       version = "0.0.1";
 
@@ -54,7 +54,7 @@ in
           ln -s "$base" "$out/stub/$(basename "$base")"
         done
       '';
-    })
+    }) */
   ];
 
   solar.bundle-preload = true;

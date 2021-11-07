@@ -14,7 +14,7 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     wget                         # The gold standard for CLI downloads
     psmisc                       # Needed utils bundled in a single package
     tree                         # A better version of ls
-    gnome3.gnome-system-monitor  # Its pretty understandable from the name, I guess?
+    gnome.gnome-system-monitor  # Its pretty understandable from the name, I guess?
 
     # apps
     cinnamon.nemo                # To show files
@@ -36,7 +36,7 @@ mkFeatureFlag { name = "software"; desc = "SolarOS default software"; enabled = 
     firefox
 
     # autostart
-    (mkAutostart ["flameshot"])  # autostart flameshot with the OS
+    (mkAutostart [["flameshot" "org.flameshot.Flameshot"]])  # autostart flameshot with the OS
 
     # ntfs ro fix
     (hiPrio ntfs3g)

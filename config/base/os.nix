@@ -27,7 +27,6 @@ with lib;
     environment.systemPackages = with pkgs; [
       # sys apps
       conf-tool                    # Config Tool
-      nixNodePackage               # A hack to get nix-node package to be available at every eval
     ];
 
     channels = {

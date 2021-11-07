@@ -1,4 +1,4 @@
-import "${import ../lib/nixpkgs.nix}/nixos/tests/make-test-python.nix" ({ pkgs, ...} : {
+{ pkgs, nixosModules, ...} : {
   name = "install";
   meta = with pkgs.stdenv.lib.maintainers; {
     maintainers = [ mkg20001 ];
@@ -7,6 +7,7 @@ import "${import ../lib/nixpkgs.nix}/nixos/tests/make-test-python.nix" ({ pkgs, 
   nodes = {
     machine = { config, lib, pkgs, ... }: {
       imports = [
+        nixosModules.overlays
         ../config/profiles/installer-vm.nix
       ];
 
@@ -20,4 +21,4 @@ import "${import ../lib/nixpkgs.nix}/nixos/tests/make-test-python.nix" ({ pkgs, 
 
     machine.succeed("quick-install-vm /dev/$(lsblk -d -o name | grep '^sd' | tail -n 1)")
   '';
-})
+}

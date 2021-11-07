@@ -1,25 +1,29 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  repos="nixinstall conf-tool"
+  repos="distinst conf-tool" # nixinstall
 else
   repos="$*"
 fi
+
+set -euo pipefail
 
 raw_file() {
   wget "https://github.com/ssd-solar/$1/raw/master/$2" -O "$3"
 }
 
+set -x
+
 for repo in $repos; do
-  if [ ! -d "$repo" ]; then
-    mkdir "$repo"
-    cat template.nix | sed "s|NAME|$repo|g" > "$repo/default.nix"
-  fi
-  nix-prefetch-git "https://github.com/ssd-solar/$repo" > "$repo/source.json"
-  if [ -e "$repo/package-lock.json" ]; then
-    raw_file "$repo" "package-lock.json" "$repo/package-lock.json"
-  fi
-  if [ -e "$repo/app-package-lock.json" ]; then
-    raw_file "$repo" "app/package-lock.json" "$repo/app-package-lock.json"
-  fi
+  rm -rf "$repo"
+  mkdir "$repo"
+
+  nix-prefetch-github ssd-solar "$repo" > "$repo/source.json"
+
+  raw_file "$repo" "package.nix" "$repo/default.nix"
+  for file in $(cat "$repo/default.nix" | grep -o " \\./[a-z0-9/._-]*" | grep -v "\\./\\."); do
+    fpath=${file/"./"/""}
+    raw_file "$repo" "$fpath" "$repo/$fpath"
+  done
+  sed "s|drvSrc \\? .*|sFetchSrc, drvSrc ? sFetchSrc ./source.json|g" -i "$repo/default.nix"
 done

@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     sha256 = "10lpnd5yw2ixn7ifaa9zysy4pjj4mklsbrasc0rii51ir8p9akd8";
   };
 
-  dontUnpack = true;
+  src = ./.;
 
   installPhase = ''
     tar xvf $bashSrc --xz
@@ -19,8 +19,16 @@ stdenv.mkDerivation rec {
 
     sed "s|/usr/bin|/run/current-system/sw/bin|g" -i debian/skel.*
 
+    mkdir $out/.bash.d
+
+    # TODO: check if we can integrate the .bashrc stub into bash itself (consider cross-distro compat, having the stub works everywhere)
+
     mv debian/skel.bash_logout $out/.bash_logout
-    mv debian/skel.bashrc $out/.bashrc
+    mv debian/skel.bashrc $out/.bash.d/default-bashrc
     mv debian/skel.profile $out/.profile
+
+    for f in files/*; do
+      mv $f $out/$(basename $f)
+    done
   '';
 }

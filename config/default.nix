@@ -6,12 +6,11 @@ with lib;
   imports = [
     ./base
     ./de
+    ./flakes.nix
   ];
 
-  # add our stuff. take over the repos ^^
-  nixpkgs.overlays = [
-    (import ../pkgs/overlay.nix)
-  ];
+  # NOTE: overlays are now imported via nixosModules.overlays
+  # since we can't reference the flake itself from here easily
 
   # nixpkgs.config.allowUnfree will be activated by installer
   # we are NOT allowed to redistribute propriatery stuff in the ISO
