@@ -4,7 +4,10 @@ with (import ../lib args);
 
 mkFeatureFlag { name = "printing"; desc = "printing and scanning support"; enabled = true; } {
   services.system-config-printer.enable = true;
-  environment.systemPackages = with pkgs; [ system-config-printer ];
+
+  environment.systemPackages = with pkgs; [
+    system-config-printer
+  ];
 
   # Enable CUPS to print documents.
   services.printing = {

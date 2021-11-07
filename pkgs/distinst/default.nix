@@ -20,12 +20,11 @@
 , conf-tool
 , nixDistinst ? nixFlakes
 , makeRustPlatform
+, system ? "x86_64-linux"
 , sFetchSrc, drvSrc ? sFetchSrc ./source.json
 }:
 
 let
-  libcroco = callPackage ./libcroco.nix { };
-
   ccForBuild="${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc";
   cxxForBuild="${stdenv.cc}/bin/${stdenv.cc.targetPrefix}c++";
   ccForHost="${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc";
@@ -52,8 +51,7 @@ let
           nix.package = nixPatched;
         })
       ];
-      # FIXME: determine dynamically
-      system = "x86_64-linux";
+      inherit system;
      };
     with config.system.build;
       # https://github.com/NixOS/nixpkgs/pull/87182/files?file-filters%5B%5D=.nix&file-filters%5B%5D=.sh&file-filters%5B%5D=.xml
@@ -80,7 +78,7 @@ with rust; (makeRustPlatform packages.stable).buildRustPackage rec {
 
   src = drvSrc;
 
-  cargoSha256 = "sha256-0JZrFJ/b+HHZyyVjppX1dcjiN4YSz6FakfONZxSAeT8=";
+  cargoSha256 = "sha256-GgYb7PcTysK74YE+aIls2DcVDj8hvzGxqbtxrr+yOV0=";
 
   nativeBuildInputs = [
     pkg-config
@@ -97,7 +95,6 @@ with rust; (makeRustPlatform packages.stable).buildRustPackage rec {
 
     # shadow-deps of gettext rust
     libxml2
-    libcroco
     glib
     libunistring
   ];

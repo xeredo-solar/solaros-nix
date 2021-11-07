@@ -1,7 +1,7 @@
 {
     "owner": "ssd-solar",
     "repo": "conf-tool",
-    "rev": "36841c98cfa1d84b5ab7db2b2122f8d4354c65a6",
-    "sha256": "Ei6HTyfCc8geK0yKjNXyf9Luv0INOuVTzMN5PwUp+UU=",
+    "rev": "0b851c0285eb50884ff3170eb876c70a390ffa95",
+    "sha256": "tgR+0i087MBkmNSA8o/mRlW3UHIb3rhHAbNXE6Aw0sc=",
     "fetchSubmodules": true
 }

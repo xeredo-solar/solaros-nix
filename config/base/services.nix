@@ -54,8 +54,8 @@ makeDefault {
   # More essential stuff
   security.polkit.enable = true;
   services.accounts-daemon.enable = true;
-  services.gnome3.glib-networking.enable = true;
-  services.gnome3.gnome-keyring.enable = true;
+  services.gnome.glib-networking.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   services.udisks2.enable = true;
   services.geoclue2.enable = true;
   networking.networkmanager.enable = true;

@@ -5,7 +5,6 @@ with (import ../lib args);
 mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } {
   # NOTE: this file shouldn't enable anything, just set the branding attributes
 
-
   # sys theme Flat-Remix-GTK-Blue-Darker
 
   services.xserver.displayManager.lightdm = {
