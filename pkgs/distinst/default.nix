@@ -1,6 +1,6 @@
 { stdenv
 , parted
-, pkgconfig
+, pkg-config
 , dbus
 , rust
 , gettext
@@ -20,7 +20,6 @@
 , conf-tool
 , nixDistinst ? nixFlakes
 , makeRustPlatform
-, system
 , sFetchSrc, drvSrc ? sFetchSrc ./source.json
 }:
 
@@ -53,7 +52,8 @@ let
           nix.package = nixPatched;
         })
       ];
-      inherit system;
+      # FIXME: determine dynamically
+      system = "x86_64-linux";
      };
     with config.system.build;
       # https://github.com/NixOS/nixpkgs/pull/87182/files?file-filters%5B%5D=.nix&file-filters%5B%5D=.sh&file-filters%5B%5D=.xml
@@ -83,7 +83,7 @@ with rust; (makeRustPlatform packages.stable).buildRustPackage rec {
   cargoSha256 = "sha256-0JZrFJ/b+HHZyyVjppX1dcjiN4YSz6FakfONZxSAeT8=";
 
   nativeBuildInputs = [
-    pkgconfig
+    pkg-config
     makeWrapper
     gettext
   ];

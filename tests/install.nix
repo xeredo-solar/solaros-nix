@@ -1,4 +1,4 @@
-{ pkgs, ...} : {
+{ pkgs, nixosModules, ...} : {
   name = "install";
   meta = with pkgs.stdenv.lib.maintainers; {
     maintainers = [ mkg20001 ];
@@ -7,6 +7,7 @@
   nodes = {
     machine = { config, lib, pkgs, ... }: {
       imports = [
+        nixosModules.overlays
         ../config/profiles/installer-vm.nix
       ];
 

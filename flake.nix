@@ -3,7 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:mkg20001/nixpkgs/mkg-patch-a";
+    nixpkgs.url = "github:mkg20001/nixpkgs/mkg-patch";
     nix-node-package.url = "github:mkg20001/nix-node-package/master";
     nix-node-package.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
@@ -55,21 +55,47 @@
         ({ system, pkgs, ... }:
           import ./pkgs pkgs);
 
-      checks = genericForAllSystems (system: import ./tests (
-        f: import "${nixpkgs}/nixos/tests/make-test-python.nix" f { inherit system; }
+      checks = forAllSystems ({ system, pkgs, ... }: import ./tests (
+        f: (import "${nixpkgs}/nixos/lib/testing-python.nix" {
+          inherit system pkgs;
+
+          config = {
+            overlays = builtins.attrValues self.overlays;
+          };
+        }).makeTest (f { inherit pkgs; inherit (pkgs) lib; inherit (self) nixosModules; })
       ));
 
       lib = {
         inherit
           forAllSystems
-          genericForAllSystems
-          nixpkgs;
+          genericForAllSystems;
+
+        flakes = {
+          inherit
+            nixpkgs
+            nix-node-package
+            nixos-hardware;
+        };
       };
 
       overlays = {
         inherit
           solarPkgOverlay
           solarLibOverlay;
+      };
+
+      nixosModules = {
+        overlays = { ... }: {
+          nixpkgs.overlays = (builtins.attrValues self.overlays);
+        };
+
+        config = { ... }: {
+          modules = [ ./config ];
+        };
+
+        offline-flakes = { ... }: {
+          flakes = self.lib.flakes;
+        };
       };
 
       # defaultPackage = forAllSystems ({ system, ... }: self.packages.${system}.pijul);

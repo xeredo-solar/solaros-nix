@@ -20,8 +20,8 @@ with lib;
     let
       cmds = builtins.concatStringsSep "\n"
         (forEach list (item: let
-          pkg = if builtins.isList item then elemAt 0 item else item;
-          name = if builtins.isList item then elemAt 1 item else item;
+          pkg = if builtins.isList item then elemAt item 0 else item;
+          name = if builtins.isList item then elemAt item 1 else item;
           in
             ''
               install -D "${pkgs.${pkg}}/share/applications/${name}.desktop" "$out/etc/xdg/autostart/${name}.desktop"

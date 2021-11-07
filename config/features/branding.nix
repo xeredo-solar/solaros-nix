@@ -5,17 +5,20 @@ with (import ../lib args);
 mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } {
   # NOTE: this file shouldn't enable anything, just set the branding attributes
 
+
+  # sys theme Flat-Remix-GTK-Blue-Darker
+
   services.xserver.displayManager.lightdm = {
     # background = "..."; # TODO
     greeters.gtk = {
       iconTheme = {
-        # package = pkgs.todo;
-        # name = "todo";
+        package = pkgs.flat-remix-icon-theme;
+        name = "Flat-Remix-Blue";
       };
 
       extraConfig = ''
-        cursor-theme=todo
-        theme-name=todo
+        cursor-theme=DMZ-Black
+        theme-name=Flat-Remix-GTK-Blue
         xft-antialias=true
         xft-hintstyle=hintfull
         xft-rgba=rgb
@@ -27,8 +30,11 @@ mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } 
 
   environment.systemPackages = with pkgs; [
     # design
-    # TODO
-    # vanilla-dmz (wait for license fix merge)
+    # flat-remix-icon-theme
+    # flat-remix-gtk
+    papirus-icon-theme
+    equilux-theme
+    vanilla-dmz
 
     # system
     # TODO
@@ -53,7 +59,8 @@ mkFeatureFlag { name = "branding"; desc = "SolarOS branding"; enabled = true; } 
     cantarell-fonts
     dejavu_fonts
     source-code-pro # Default monospace font in 3.32
-    source-sans-pro
+    # FIXME: missing
+    # source-sans-pro
   ];
 
   fonts.fontconfig.defaultFonts.monospace = [ "Jetbrains Mono Regular" ];

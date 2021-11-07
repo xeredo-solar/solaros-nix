@@ -18,7 +18,7 @@ with lib;
 
   solar.bundle-preload = true;
 
-  services.mingetty.autologinUser = "root";
+  services.getty.autologinUser = "root";
 
   services.openssh = {
     enable = true;

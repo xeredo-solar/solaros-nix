@@ -7,12 +7,12 @@ let
 in
 {
   imports = [
-    "${import ../../lib/nixpkgs.nix}/nixos/modules/profiles/installation-device.nix"
+    # "${import ../../lib/nixpkgs.nix}/nixos/modules/profiles/installation-device.nix"
     ./installer.nix
     ./vm.nix
   ];
 
-  services.mingetty.autologinUser = mkForce "solaros";
+  services.getty.autologinUser = mkForce "solaros";
 
   virtualisation.qemu.networkingOptions = [
     "-hdb $(readlink -f ${disk})"
@@ -21,6 +21,6 @@ in
 
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "quick-install-vm" (builtins.readFile ./quick-install-vm.sh))
-    pkgs.nixinstall.distinst
+    pkgs.distinst
   ];
 }
