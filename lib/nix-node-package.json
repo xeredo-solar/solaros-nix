@@ -1,7 +1,6 @@
 {
     "owner": "mkg20001",
     "repo": "nix-node-package",
-    "rev": "6ece1177d0c0b8aca1a983744099235f4191d735",
-    "sha256": "0j8dcqchyifihnf60xwwyc0gps7vz2xm3ar7f2p66f4kpdn63vb5",
-    "fetchSubmodules": true
+    "rev": "1ba9429515afcea88b817a80e5bad284ca71a78e",
+    "sha256": "hqe3sVEZYPoVBmMRA6ZvN13FXQq+rg2jfEaB67OrVOc="
 }

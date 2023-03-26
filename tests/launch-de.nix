@@ -1,7 +1,7 @@
 let
 mkTest = deName: import "${import ../lib/nixpkgs.nix}/nixos/tests/make-test.nix" ({ pkgs, ...} : {
   name = "launch-de-${deName}";
-  meta = with pkgs.stdenv.lib.maintainers; {
+  meta = with pkgs.lib.maintainers; {
     maintainers = [ mkg20001 ];
   };
 
